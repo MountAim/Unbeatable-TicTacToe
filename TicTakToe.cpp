@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include <windows.h>
+#include<windows.h>
 #define clrscr() system("cls");
 using namespace std;
 void gotoxy(int x, int y);
@@ -181,7 +181,13 @@ void computer()
 	
 	if(ar[2][2]==' ')
 	{
-		ar[2][2]='x';
+		if(ar[1][1]==' '&&ar[3][3]==' '&&ar[1][3]==' '&&ar[3][1]==' ')
+		{
+			if(ar[1][2]=='o'||ar[2][1]=='o')
+				ar[1][1]='x';
+			else ar[3][3]='x';	
+		}
+		else ar[2][2]='x';
 		player();
 		return;
 	}
@@ -217,6 +223,7 @@ void computer()
 		player();
 		return;
 	}	
+	
 	for(int i=1;i<=3;++i)
 		for(int j=1;j<=3;++j)
 			if(ar[i][j]==' ')
@@ -301,4 +308,3 @@ int main()
 	}
 	return 0;
 }
-
