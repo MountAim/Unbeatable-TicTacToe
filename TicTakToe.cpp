@@ -194,6 +194,35 @@ void computer()
 	
 	else if(ar[2][2]=='x')
 	{
+		if(ar[1][1]=='o'&&ar[3][2]=='o')
+		{
+			ar[3][1]='x';
+			player();
+			return;	
+		}
+		
+		if(ar[1][3]=='o'&&ar[3][2]=='o')
+		{
+			ar[3][3]='x';
+			player();
+			return;	
+		}
+		
+		if(ar[1][2]=='o'&&ar[3][1]=='o')
+		{
+			ar[1][1]='x';
+			player();
+			return;	
+		}
+		
+		if(ar[1][2]=='o'&&ar[3][3]=='o')
+		{
+			ar[1][3]='x';
+			player();
+			return;	
+		}
+		
+		
 		for(int i=1;i<=3;++i)
 			if(ar[i][2]==' ')
 			{
