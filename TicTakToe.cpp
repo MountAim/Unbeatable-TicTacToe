@@ -28,7 +28,9 @@ void player()
 	for(int i=0;i<space-8;++i)	cout<<" ";
 	cout<<"  |  | |__     | |_|_ |__     | |_||_ \n\n";
 	for(int i=0;i<space-8;++i)	cout<<" ";
-	cout<<"                    by Siddharth Singhal";
+	cout<<"                    by Siddharth Singhal\n\n";
+	for(int i=0;i<space-4;++i)	cout<<" ";
+	cout<<"Press R to Reset at any Move";
 	for(int i=0;i<5;++i)	cout<<"\n";
 	for(int i=0;i<space;++i)	cout<<" ";
 	cout<<"   1   2   3 \n";
@@ -44,7 +46,7 @@ void player()
 	cout<<"3  "<<ar[3][1]<<" | "<<ar[3][2]<<" | "<<ar[3][3]<<" \n";
 }
 
-void computer()
+int computer()
 {
 	clrscr();
 	int cnt,pos;
@@ -63,7 +65,7 @@ void computer()
 			cout<<"\n";
 			for(int i=0;i<space;++i)	cout<<" ";
 			cout<<" Computer Won! ";
-			exit(0);
+			return 1;
 		}
 	}
 	
@@ -82,7 +84,7 @@ void computer()
 			cout<<"\n";
 			for(int i=0;i<space;++i)	cout<<" ";
 			cout<<" Computer Won! ";
-			exit(0);
+			return 1;
 		}
 	}
 	
@@ -98,7 +100,7 @@ void computer()
 			cout<<"\n";
 			for(int i=0;i<space;++i)	cout<<" ";
 			cout<<" Computer Won! ";
-			exit(0);
+			return 1;
 		}
 	}
 	
@@ -113,8 +115,8 @@ void computer()
 			player();
 			cout<<"\n";
 			for(int i=0;i<space;++i)	cout<<" ";
-			cout<<" Computer Won! \n\n";
-			exit(0);
+			cout<<" Computer Won! ";
+			return 1;
 		}
 	}
 	
@@ -133,7 +135,7 @@ void computer()
 		{
 			ar[i][pos]='x';
 			player();
-			return;
+			return 0;
 		}
 	}
 	
@@ -149,7 +151,7 @@ void computer()
 		{
 			ar[pos][i]='x';
 			player();
-			return;
+			return 0;
 		}
 	}
 
@@ -162,7 +164,7 @@ void computer()
 		{
 			ar[pos][pos]='x';
 			player();
-			return;
+			return 0;
 		}
 	}
 	
@@ -175,7 +177,7 @@ void computer()
 		{
 			ar[pos][4-pos]='x';
 			player();
-			return;
+			return 0;
 		}
 	}
 	
@@ -189,7 +191,7 @@ void computer()
 		}
 		else ar[2][2]='x';
 		player();
-		return;
+		return 0;
 	}
 	
 	else if(ar[2][2]=='x')
@@ -198,28 +200,28 @@ void computer()
 		{
 			ar[3][1]='x';
 			player();
-			return;	
+			return 0;	
 		}
 		
 		if(ar[1][3]=='o'&&ar[3][2]=='o')
 		{
 			ar[3][3]='x';
 			player();
-			return;	
+			return 0;	
 		}
 		
 		if(ar[1][2]=='o'&&ar[3][1]=='o')
 		{
 			ar[1][1]='x';
 			player();
-			return;	
+			return 0;	
 		}
 		
 		if(ar[1][2]=='o'&&ar[3][3]=='o')
 		{
 			ar[1][3]='x';
 			player();
-			return;	
+			return 0;	
 		}
 		
 		
@@ -228,7 +230,7 @@ void computer()
 			{
 				ar[i][2]='x';
 				player();
-				return;
+				return 0;
 			}
 			
 		for(int i=1;i<=3;++i)
@@ -236,7 +238,7 @@ void computer()
 			{
 				ar[2][i]='x';
 				player();
-				return;
+				return 0;
 			}		
 	}
 	
@@ -244,20 +246,20 @@ void computer()
 	{
 		ar[1][1]='x';
 		player();
-		return;
+		return 0;
 	}
 	if(ar[1][3]==' ')
 	{
 		ar[1][3]='x';
 		player();
-		return;
+		return 0;
 	}	
 	
 	for(int i=1;i<=3;++i)
 		for(int j=1;j<=3;++j)
 			if(ar[i][j]==' ')
 				ar[i][j]='x';
-					return;
+					return 0;
 	
 }
 
@@ -283,7 +285,13 @@ int main()
 		int cha=3;
 		while((!valid)&&(cha))
 		{
-			cin>>x>>y;
+			char ch;
+			cin>>ch;
+			if(ch=='R'||ch=='r')
+				goto start;
+			cin>>y;
+			
+			x=ch-'0';
 			if(x>=1&&x<4&&y>=1&&y<4&&ar[x][y]==' ')	
 			{
 				valid=true;
@@ -298,7 +306,11 @@ int main()
 					cout<<"\n";
 					for(int i=0;i<space-5;++i)	cout<<" ";
 					cout<<"Too Many Incorrect Attempts\n ";	
-					exit(0);
+					cout<<"\n";
+					for(int i=0;i<space;++i)	cout<<" ";
+					cout<<"Try Again(y/n)? ";
+					end();
+					goto start;
 				}
 				player();
 				cout<<"\n";
@@ -333,7 +345,14 @@ int main()
 		player();
 		for(int i=0;i<space;++i)	cout<<" ";
 		cout<<"Processing  .\n";
-		computer();
+		if(computer()==1)
+		{
+			cout<<"\n";
+			for(int i=0;i<space;++i)	cout<<" ";
+			cout<<"Try Again(y/n)? ";
+			end();
+			goto start;
+		}
 	}
 	return 0;
 }
