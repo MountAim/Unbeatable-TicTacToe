@@ -1,25 +1,34 @@
 #include <bits/stdc++.h>
-#include<windows.h>
+#include<windows.h>   //--> For Sleep
 #define clrscr() system("cls");
+
 using namespace std;
+
 void gotoxy(int x, int y);
+
 const int space=45,new_ln=10,delay=501;
 
 vector<vector<char>> ar(4,vector<char> (4));
 
-/*Tic Tac Toe is a 4 Move GAME the first four move can decide the result*/
+pair< int , pair<int, int> > mmin(vector<vector<char>>,int );
+
+pair< int , pair<int, int> > mmax(vector<vector<char>>,int);
+
 
 void end()
 {
 	char s;
 	cin>>s;
-	if((s=='y')||(s=='Y'))	;
-	else exit(0);	
+	if(s == 'y' || s=='Y')	
+		;
+	else 
+		exit(0);	
 }
 
-void player()
+void print_board()
 {
 	clrscr();
+	
 	for(int i=0;i<5;++i)	cout<<"\n";
 	for(int i=0;i<space-8;++i)	cout<<" ";
 	cout<<"-----        -----          -----   _   \n";
@@ -46,239 +55,166 @@ void player()
 	cout<<"3  "<<ar[3][1]<<" | "<<ar[3][2]<<" | "<<ar[3][3]<<" \n";
 }
 
-int computer()
+bool is_won(vector<vector<char>> a,char ch)
 {
-	clrscr();
-	int cnt,pos;
-	for(int i=1;i<=3;++i)
+	
+	for(int i = 1; i <=3 ; ++ i)
 	{
-		cnt=0,pos=0;
-		for(int j=1;j<=3;++j)
-		{
-			if(ar[i][j]==' ')	pos=j;
-			else if(ar[i][j]=='x')	++cnt;			
-		}
-		if((cnt==2)&&(pos))
-		{
-			ar[i][pos]='x';
-			player();
-			cout<<"\n";
-			for(int i=0;i<space;++i)	cout<<" ";
-			cout<<" Computer Won! ";
+		int cnt = 0;
+		for(int j = 1; j <=3; ++j)
+			cnt += (a[i][j] == ch);
+		if(cnt == 3)
 			return 1;
-		}
 	}
 	
-	for(int i=1;i<=3;++i)
+	for(int i = 1; i <=3 ; ++ i)
 	{
-		cnt=0,pos=0;
-		for(int j=1;j<=3;++j)
-		{
-			if(ar[j][i]==' ')	pos=j;
-			else if(ar[j][i]=='x')	++cnt;			
-		}
-		if((cnt==2)&&(pos))
-		{
-			ar[pos][i]='x';
-			player();
-			cout<<"\n";
-			for(int i=0;i<space;++i)	cout<<" ";
-			cout<<" Computer Won! ";
+		int cnt = 0;
+		for(int j = 1; j <=3; ++j)
+			cnt += (a[j][i] == ch);
+		if(cnt == 3)
 			return 1;
-		}
 	}
 	
-	cnt=0,pos=0;
-	for(int i=1;i<=3;++i)
-	{
-		if(ar[i][i]==' ')	pos=i;
-		else if(ar[i][i]=='x')	++cnt;			
-		if((cnt==2)&&(pos))
-		{
-			ar[pos][pos]='x';
-			player();
-			cout<<"\n";
-			for(int i=0;i<space;++i)	cout<<" ";
-			cout<<" Computer Won! ";
+	int cnt = 0;
+	for(int i = 1; i <= 3; ++ i)
+		cnt += (a[i][i] == ch);
+	
+	if(cnt == 3)
 			return 1;
-		}
-	}
-	
-	cnt=0,pos=0;
-	for(int i=1;i<=3;++i)
-	{
-		if(ar[i][4-i]==' ')	pos=i;
-		else if(ar[i][4-i]=='x')	++cnt;			
-		if((cnt==2)&&(pos))
-		{
-			ar[pos][4-pos]='x';
-			player();
-			cout<<"\n";
-			for(int i=0;i<space;++i)	cout<<" ";
-			cout<<" Computer Won! ";
-			return 1;
-		}
-	}
-	
-	/* Check if Opponent Can Win */
-	
-
-	for(int i=1;i<=3;++i)
-	{
-		cnt=0,pos=0;
-		for(int j=1;j<=3;++j)
-		{
-			if(ar[i][j]==' ')	pos=j;
-			else if(ar[i][j]=='o')	++cnt;			
-		}
-		if((cnt==2)&&(pos))
-		{
-			ar[i][pos]='x';
-			player();
-			return 0;
-		}
-	}
-	
-	for(int i=1;i<=3;++i)
-	{
-		cnt=0,pos=0;
-		for(int j=1;j<=3;++j)
-		{
-			if(ar[j][i]==' ')	pos=j;
-			else if(ar[j][i]=='o')	++cnt;			
-		}
-		if((cnt==2)&&(pos))
-		{
-			ar[pos][i]='x';
-			player();
-			return 0;
-		}
-	}
-
-	cnt=0,pos=0;
-	for(int i=1;i<=3;++i)
-	{
-		if(ar[i][i]==' ')	pos=i;
-		else if(ar[i][i]=='o')	++cnt;			
-		if((cnt==2)&&(pos))
-		{
-			ar[pos][pos]='x';
-			player();
-			return 0;
-		}
-	}
-	
-	cnt=0,pos=0;
-	for(int i=1;i<=3;++i)
-	{
-		if(ar[i][4-i]==' ')	pos=i;
-		else if(ar[i][4-i]=='o')	++cnt;			
-		if((cnt==2)&&(pos))
-		{
-			ar[pos][4-pos]='x';
-			player();
-			return 0;
-		}
-	}
-	
-	if(ar[2][2]==' ')
-	{
-		if(ar[1][1]==' '&&ar[3][3]==' '&&ar[1][3]==' '&&ar[3][1]==' ')
-		{
-			if(ar[1][2]=='o'||ar[2][1]=='o')
-				ar[1][1]='x';
-			else ar[3][3]='x';	
-		}
-		else ar[2][2]='x';
-		player();
-		return 0;
-	}
-	
-	else if(ar[2][2]=='x')
-	{
-		if(ar[1][1]=='o'&&ar[3][2]=='o')
-		{
-			ar[3][1]='x';
-			player();
-			return 0;	
-		}
-		
-		if(ar[1][3]=='o'&&ar[3][2]=='o')
-		{
-			ar[3][3]='x';
-			player();
-			return 0;	
-		}
-		
-		if(ar[1][2]=='o'&&ar[3][1]=='o')
-		{
-			ar[1][1]='x';
-			player();
-			return 0;	
-		}
-		
-		if(ar[1][2]=='o'&&ar[3][3]=='o')
-		{
-			ar[1][3]='x';
-			player();
-			return 0;	
-		}
-		
-		
-		for(int i=1;i<=3;++i)
-			if(ar[i][2]==' ')
-			{
-				ar[i][2]='x';
-				player();
-				return 0;
-			}
 			
-		for(int i=1;i<=3;++i)
-			if(ar[2][i]==' ')
-			{
-				ar[2][i]='x';
-				player();
-				return 0;
-			}		
-	}
+	cnt = 0;
+	for(int i = 1; i <= 3; ++ i)
+		cnt += (a[i][4 - i] == ch);
 	
-	if(ar[1][1]==' ')
-	{
-		ar[1][1]='x';
-		player();
-		return 0;
-	}
-	if(ar[1][3]==' ')
-	{
-		ar[1][3]='x';
-		player();
-		return 0;
-	}	
-	
-	for(int i=1;i<=3;++i)
-		for(int j=1;j<=3;++j)
-			if(ar[i][j]==' ')
-				ar[i][j]='x';
-					return 0;
-	
+	if(cnt == 3)
+			return 1;
+	return 0;
+			
 }
 
 
 
+pair< int , pair<int, int> > mmin(vector<vector<char>> a,int cnt)
+{
+	if(cnt == 0)
+		return {-5000 , {-1, - 1}};
+		
+	int mn = 1000;
+	pair<int,int> p = {-1, -1};
+	for(int i = 1; i <= 3; ++ i)
+	{
+		for(int j = 1; j <= 3; ++j)
+			if(a[i][j] == ' ')
+			{
+				if(p.first == -1)
+					p = {i, j};
+				vector<vector<char>> temp = a;
+				temp[i][j] = 'o';
+				
+				if(is_won(temp, 'o'))
+					return {cnt * -1, {i , j}};
+				
+				else if(is_won(temp, 'x'))
+				{
+					if(cnt * 1 < mn)
+					{
+						mn = cnt * 1;
+						p = {i, j};
+					}
+				}
+					
+				else if(mmax(temp, cnt -1).first < mn)
+				{
+					mn = mmax(temp, cnt -1).first;
+					p = {i, j};
+				}
+			}
+	}
+	return {mn, p};
+}
+
+pair< int , pair<int, int> > mmax(vector<vector<char>> a,int cnt)
+{
+	if(cnt == 0)
+		return {5000 , {-1, - 1}};
+		
+	int mx = - 1000;
+	pair<int,int> p = {-1, -1};
+	for(int i = 1; i <= 3; ++ i)
+	{
+		for(int j = 1; j <= 3; ++j)
+			if(a[i][j] == ' ')
+			{
+				if(p.first == -1)
+					p = {i, j};
+				vector<vector<char>> temp = a;
+				temp[i][j] = 'x';
+				
+				if(is_won(temp, 'x'))
+					return {cnt , {i , j}};
+				
+				else if(is_won(temp, 'o'))
+				{
+					if(cnt * -1 > mx)
+					{
+						mx = (cnt) * -1;
+						p = {i, j};
+					}
+				}
+					
+				else if(mmin(temp, cnt - 1).first > mx)
+				{
+					mx = mmin(temp, cnt - 1).first;
+					p = {i, j};
+				}
+			}
+	}
+	return {mx, p};
+}
+
+
+int computer()
+{
+	clrscr();	
+	int cnt = 0;
+	
+	for(int i = 1; i <= 3; ++i)
+		for(int j = 1; j <= 3; ++j)
+			cnt += (ar[i][j] == ' '); 
+	
+	pair<int, pair<int,int>> pos = mmax(ar, cnt); 
+	
+	cout<<pos.second.first<<"\n";
+	
+	ar[pos.second.first][pos.second.second] = 'x';
+	print_board();
+	
+	if(pos.first == cnt)
+	{	
+		cout<<"\n";
+		for(int i = 0 ; i  < space; ++i)	cout<<" ";
+		cout<<" Computer Won! ";
+		return 1;
+	}
+	
+	return 0;
+	
+}
 
 int main()
 {
 	start:
-	for(char i='1';i<='3';++i)
-		for(char j='1';j<='3';++j)
-			ar[i-'0'][j-'0']=' ';
+		
+	for(int i = 1; i <= 3; ++i)
+		for(int j = 1; j <= 3; ++j)
+			ar[i][j]=' ';
 	
 	
-	int x,y;
-	for(int i=0;i<=9;i+=2)
+	int x, y;
+	for(int i = 0; i <= 9; i += 2)
 	{
-	//	cout<<i<<"\n";
-		player();
+		print_board();
 		for(int i=0;i<space;++i)	cout<<" ";
 		cout<<"Your Turn  : ";
 		bool valid=false;
@@ -292,7 +228,7 @@ int main()
 			cin>>y;
 			
 			x=ch-'0';
-			if(x>=1&&x<4&&y>=1&&y<4&&ar[x][y]==' ')	
+			if(x >= 1 && x < 4 && y >= 1 && y < 4 && ar[x][y]==' ')	
 			{
 				valid=true;
 				ar[x][y]='o';
@@ -302,7 +238,7 @@ int main()
 				--cha;
 				if(cha==0)
 				{
-					player();
+					print_board();
 					cout<<"\n";
 					for(int i=0;i<space-5;++i)	cout<<" ";
 					cout<<"Too Many Incorrect Attempts\n ";	
@@ -312,7 +248,7 @@ int main()
 					end();
 					goto start;
 				}
-				player();
+				print_board();
 				cout<<"\n";
 				for(int i=0;i<space;++i)	cout<<" ";
 				cout<<"Invalid Move!\n ";
@@ -323,10 +259,10 @@ int main()
 			}
 			
 		}
-		player();
+		print_board();
 		if(i==8)	
 		{
-			player();
+			print_board();
 			cout<<"\n";
 			for(int i=0;i<space;++i)	cout<<" ";
 			cout<<"  Match Drawn\n\n";
@@ -338,11 +274,11 @@ int main()
 		for(int i=0;i<space;++i)	cout<<" ";
 		cout<<"Processing.\n";
 		Sleep(delay);
-		player();
+		print_board();
 		for(int i=0;i<space;++i)	cout<<" ";
 		cout<<"Processing .\n";
 		Sleep(delay);
-		player();
+		print_board();
 		for(int i=0;i<space;++i)	cout<<" ";
 		cout<<"Processing  .\n";
 		if(computer()==1)
@@ -356,3 +292,4 @@ int main()
 	}
 	return 0;
 }
+
