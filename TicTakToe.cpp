@@ -6,53 +6,78 @@ using namespace std;
 
 void gotoxy(int x, int y);
 
-const int space=45,new_ln=10,delay=501;
+const int space = 45, new_ln = 10, delay = 501;
 
-vector<vector<char>> ar(4,vector<char> (4));
+vector< vector< char>> ar(4, vector< char> (4));
 
-pair< int , pair<int, int> > mmin(vector<vector<char>>,int );
+pair< int , pair<int, int>> mmin(vector< vector< char>>, int);
 
-pair< int , pair<int, int> > mmax(vector<vector<char>>,int);
+pair< int , pair<int, int>> mmax(vector< vector< char>>, int);
 
+
+void init_board()
+{
+	for(int i = 1; i <= 3; ++ i)
+		for(int j = 1; j <= 3; ++ j)
+			ar[i][j]=' ';
+}
 
 void end()
 {
 	char s;
-	cin>>s;
+	cin >> s;
 	if(s == 'y' || s=='Y')	
 		;
 	else 
 		exit(0);	
 }
 
+void print_spaces(int x)
+{
+	for(int i = 0; i < x; ++i)
+		cout << ' ';
+}
+
 void print_board()
 {
 	clrscr();
 	
-	for(int i=0;i<5;++i)	cout<<"\n";
-	for(int i=0;i<space-8;++i)	cout<<" ";
-	cout<<"-----        -----          -----   _   \n";
-	for(int i=0;i<space-8;++i)	cout<<" ";
-	cout<<"  |  .  __     |  _    __     |  _ |_  \n";
-	for(int i=0;i<space-8;++i)	cout<<" ";
-	cout<<"  |  | |__     | |_|_ |__     | |_||_ \n\n";
-	for(int i=0;i<space-8;++i)	cout<<" ";
-	cout<<"                    by Siddharth Singhal\n\n";
-	for(int i=0;i<space-4;++i)	cout<<" ";
-	cout<<"Press R to Reset at any Move";
-	for(int i=0;i<5;++i)	cout<<"\n";
-	for(int i=0;i<space;++i)	cout<<" ";
-	cout<<"   1   2   3 \n";
-	for(int i=0;i<space;++i)	cout<<" ";
-	cout<<"1  "<<ar[1][1]<<" | "<<ar[1][2]<<" | "<<ar[1][3]<<" \n";
-	for(int i=0;i<space;++i)	cout<<" ";
-	cout<<"  ---|---|---\n";
-	for(int i=0;i<space;++i)	cout<<" ";
-	cout<<"2  "<<ar[2][1]<<" | "<<ar[2][2]<<" | "<<ar[2][3]<<" \n";
-	for(int i=0;i<space;++i)	cout<<" ";
-	cout<<"  ---|---|---\n";
-	for(int i=0;i<space;++i)	cout<<" ";
-	cout<<"3  "<<ar[3][1]<<" | "<<ar[3][2]<<" | "<<ar[3][3]<<" \n";
+	for(int i = 0; i < 5; ++ i)	cout << "\n";
+	
+	print_spaces(space - 8);
+	cout << "-----        -----          -----   _   \n";
+	
+	print_spaces(space - 8);
+	cout << "  |  .  __     |  _    __     |  _ |_  \n";
+	
+	print_spaces(space - 8);
+	cout << "  |  | |__     | |_|_ |__     | |_||_ \n\n";
+	
+	print_spaces(space - 8);
+	cout << "                    by Siddharth Singhal\n\n";
+	
+	print_spaces(space - 4);
+	cout << "Press R to Reset at any Move";
+	
+	for(int i = 0; i < 5; ++ i)	cout << "\n";
+	
+	print_spaces(space);
+	cout << "   1   2   3 \n";
+	
+	print_spaces(space);
+	cout << "1  " << ar[1][1] << " | " << ar[1][2] << " | " << ar[1][3] << " \n";
+	
+	print_spaces(space);
+	cout << "  ---|---|---\n";
+	
+	print_spaces(space);
+	cout << "2  " << ar[2][1] << " | " << ar[2][2]<<" | " << ar[2][3] << " \n";
+	
+	print_spaces(space);
+	cout << "  ---|---|---\n";
+	
+	print_spaces(space);
+	cout << "3  " << ar[3][1] << " | " << ar[3][2] << " | " << ar[3][3] << " \n";
 }
 
 bool is_won(vector<vector<char>> a,char ch)
@@ -185,16 +210,14 @@ int computer()
 	
 	pair<int, pair<int,int>> pos = mmax(ar, cnt); 
 	
-	cout<<pos.second.first<<"\n";
-	
 	ar[pos.second.first][pos.second.second] = 'x';
 	print_board();
 	
 	if(pos.first == cnt)
 	{	
-		cout<<"\n";
-		for(int i = 0 ; i  < space; ++i)	cout<<" ";
-		cout<<" Computer Won! ";
+		cout << "\n";
+		print_spaces(space);
+		cout << " Computer Won! ";
 		return 1;
 	}
 	
@@ -205,90 +228,119 @@ int computer()
 int main()
 {
 	start:
-		
-	for(int i = 1; i <= 3; ++i)
-		for(int j = 1; j <= 3; ++j)
-			ar[i][j]=' ';
-	
+
+	init_board();
 	
 	int x, y;
+	
 	for(int i = 0; i <= 9; i += 2)
 	{
 		print_board();
-		for(int i=0;i<space;++i)	cout<<" ";
+		print_spaces(space);
+		
 		cout<<"Your Turn  : ";
-		bool valid=false;
-		int cha=3;
-		while((!valid)&&(cha))
+		
+		bool valid = false;
+		int cha = 3;
+		
+		while((!valid) && (cha))
 		{
 			char ch;
-			cin>>ch;
-			if(ch=='R'||ch=='r')
-				goto start;
-			cin>>y;
+			cin >> ch;
 			
-			x=ch-'0';
+			if(ch == 'R' || ch == 'r')
+				goto start;
+			
+			cin >> y;
+			
+			x = ch - '0';
+			
 			if(x >= 1 && x < 4 && y >= 1 && y < 4 && ar[x][y]==' ')	
 			{
-				valid=true;
+				valid = true;
 				ar[x][y]='o';
 			}
+			
 			else
 			{
-				--cha;
-				if(cha==0)
+				-- cha;
+				
+				if(cha == 0)
 				{
 					print_board();
-					cout<<"\n";
-					for(int i=0;i<space-5;++i)	cout<<" ";
-					cout<<"Too Many Incorrect Attempts\n ";	
-					cout<<"\n";
-					for(int i=0;i<space;++i)	cout<<" ";
-					cout<<"Try Again(y/n)? ";
+					
+					cout << "\n";
+					print_spaces(space - 5);
+					cout << "Too Many Incorrect Attempts\n ";	
+					cout << "\n";
+					
+					print_spaces(space);
+					
+					cout << "Try Again(y/n)? ";
+					
 					end();
+					
 					goto start;
 				}
+				
 				print_board();
-				cout<<"\n";
-				for(int i=0;i<space;++i)	cout<<" ";
-				cout<<"Invalid Move!\n ";
-				for(int i=0;i<space;++i)	cout<<" ";
-				cout<<" Try Again\n";
-				for(int i=0;i<space-1;++i)	cout<<" ";
-				cout<<cha<<(cha==1?" Chance":" Chances")<<" left:";
+			
+				cout << "\n";
+				print_spaces(space);	
+				cout << "Invalid Move!\n ";
+				
+				print_spaces(space);
+				cout << " Try Again\n";
+				
+				print_spaces(space - 1);
+				cout << cha << (cha == 1 ? " Chance" : " Chances") << " left:";
 			}
 			
 		}
 		print_board();
-		if(i==8)	
+		
+		if(i == 8)	
 		{
 			print_board();
-			cout<<"\n";
-			for(int i=0;i<space;++i)	cout<<" ";
-			cout<<"  Match Drawn\n\n";
-			for(int i=0;i<space;++i)	cout<<" ";
-			cout<<"Try Again(y/n)? ";
+			cout << "\n";
+			
+			print_spaces(space);
+			cout << "  Match Drawn\n\n";
+			
+			print_spaces(space);
+			cout << "Try Again(y/n)? ";
+			
 			end();
+			
 			goto start;
 		}
-		for(int i=0;i<space;++i)	cout<<" ";
-		cout<<"Processing.\n";
+		
+		print_spaces(space);
+		cout << "Processing.\n";
 		Sleep(delay);
+		
 		print_board();
-		for(int i=0;i<space;++i)	cout<<" ";
-		cout<<"Processing .\n";
+		
+		print_spaces(space);
+		cout << "Processing .\n";
 		Sleep(delay);
+		
 		print_board();
-		for(int i=0;i<space;++i)	cout<<" ";
-		cout<<"Processing  .\n";
+		
+		print_spaces(space);
+		cout << "Processing  .\n";
+		
 		if(computer()==1)
 		{
-			cout<<"\n";
-			for(int i=0;i<space;++i)	cout<<" ";
-			cout<<"Try Again(y/n)? ";
+			cout << "\n";
+			print_spaces(space);
+			cout << "Try Again(y/n)? ";
+			
 			end();
+			
 			goto start;
 		}
+		
 	}
 	return 0;
 }
